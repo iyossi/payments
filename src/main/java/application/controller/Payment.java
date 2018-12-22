@@ -1,0 +1,18 @@
+package application.controller;
+
+import application.model.RequestDto;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
+
+@RestController
+public class Payment {
+
+    @PostMapping(path = "/payments")
+    public UUID createPayment(@RequestBody RequestDto request) {
+        System.out.println("request is " + request.toString());
+        return UUID.randomUUID();
+    }
+}
