@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-public class Payment {
+public class PaymentController {
 
     @PostMapping(path = "/payments")
     public UUID createPayment(@RequestBody RequestDto request) {
