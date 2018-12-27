@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payees")
-public class Payee {
+public class PayeeController {
 
-    Logger logger = LoggerFactory.getLogger(Payee.class);
+    Logger logger = LoggerFactory.getLogger(PayeeController.class);
     @Autowired
     CustomerService customerService;
 
