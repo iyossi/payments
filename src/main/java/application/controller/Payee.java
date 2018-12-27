@@ -1,9 +1,11 @@
 package application.controller;
 
 import application.Exception.BasicRestException;
-import application.model.Customer;
-import application.model.PaymentMethod;
+import application.api.CustomerDto;
+import application.api.PaymentMethodDto;
 import application.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,31 +15,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payees")
 public class Payee {
 
+    Logger logger = LoggerFactory.getLogger(Payee.class);
     @Autowired
     CustomerService customerService;
 
     @GetMapping("")
-    public List<Customer> getPayees() {
+    public List<CustomerDto> getPayees() {
         try {
-            List<Customer> result = customerService.getAllCustomers();
+            List<CustomerDto> result = customerService.getAllCustomers().stream().
+                    map(obj -> {
+                        return new CustomerDto(obj.getCustomerId(), obj.getName(), obj.getMail());
+                    }).collect(Collectors.toList());
             return result;
         } catch (RuntimeException e) {
+            logger.error(e.toString());
+            e.printStackTrace();
             throw new BasicRestException("Can't get customers");
         }
     }
 
     @GetMapping("/{id}/payment-methods")
-    public List<PaymentMethod> getPaymentMethod(@PathVariable UUID id) {
+    public List<PaymentMethodDto> getPaymentMethod(@PathVariable UUID id) {
         try {
             System.out.println("id=" + id.toString());
-            List<PaymentMethod> result = customerService.getPaymentMethodByCustomerId(id);
+            List<PaymentMethodDto> result = customerService.getPaymentMethodByCustomerId(id).stream().
+                    map(obj -> {
+                        return new PaymentMethodDto(obj.getId(), obj.getType().name(), obj.getNumber());
+                    }).collect(Collectors.toList());
             return result;
         } catch (RuntimeException e) {
+            logger.error(e.toString());
             throw new BasicRestException(HttpStatus.NOT_FOUND);
         }
     }

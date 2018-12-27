@@ -1,4 +1,4 @@
-package application.model;
+package application.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestDto {
-    public float amount;
-    public Currency currency;
-    public UUID userId;
-    public UUID payeeId;
-    public UUID paymentMethod;
+    private float amount;
+    private Currency currency;
+    private UUID userId;
+    private UUID payeeId;
+    private UUID paymentMethod;
 };

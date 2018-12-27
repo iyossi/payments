@@ -1,7 +1,7 @@
 package application.controller;
 
 import application.Exception.BasicRestException;
-import application.model.RequestDto;
+import application.api.RequestDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
