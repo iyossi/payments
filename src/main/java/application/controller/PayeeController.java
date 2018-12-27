@@ -1,8 +1,8 @@
 package application.controller;
 
-import application.Exception.BasicRestException;
 import application.api.CustomerDto;
 import application.api.PaymentMethodDto;
+import application.exception.BasicRestException;
 import application.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

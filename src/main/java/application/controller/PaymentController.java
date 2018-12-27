@@ -1,9 +1,11 @@
 package application.controller;
 
-import application.Exception.BasicRestException;
 import application.api.RequestDto;
+import application.exception.BasicRestException;
+import application.service.PaymentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +19,17 @@ public class PaymentController {
 
     Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
+    @Autowired
+    private PaymentService paymentService;
+
     @PostMapping("")
     public UUID createPayment(@RequestBody RequestDto request) {
         try {
             logger.info("request is " + request.toString());
-            return UUID.randomUUID();
+            paymentService.handleRequest(request);
+//            return UUID.randomUUID();
+            return null;
+
         } catch (RuntimeException e) {
             throw new BasicRestException("Can't process payment request " + request);
         }
