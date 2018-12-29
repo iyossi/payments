@@ -26,11 +26,13 @@ public class PaymentController {
     public UUID createPayment(@RequestBody RequestDto request) {
         try {
             logger.info("request is " + request.toString());
-            paymentService.handleRequest(request);
+            UUID paymentId = paymentService.handleRequest(request);
 //            return UUID.randomUUID();
-            return null;
+            return paymentId;
 
         } catch (RuntimeException e) {
+            logger.error(e.toString());
+            e.printStackTrace();
             throw new BasicRestException("Can't process payment request " + request);
         }
     }

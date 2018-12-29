@@ -1,19 +1,26 @@
 package application.api;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import java.io.Serializable;
 import java.util.Currency;
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-public class RequestDto {
+public class RequestDto implements Serializable {
     private float amount;
     private Currency currency;
     private UUID userId;
     private UUID payeeId;
     private UUID paymentMethodId;
+
+    public RequestDto() {
+    }
+
+    public RequestDto(float amount, Currency currency, UUID userId, UUID payeeId, UUID paymentMethod) {
+        this.amount = amount;
+        this.currency = currency;
+        this.userId = userId;
+        this.payeeId = payeeId;
+        this.paymentMethodId = paymentMethod;
+    }
 
     @Override
     public String toString() {
@@ -64,13 +71,5 @@ public class RequestDto {
 
     public void setPaymentMethodId(UUID paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
-    }
-
-    public RequestDto(float amount, Currency currency, UUID userId, UUID payeeId, UUID paymentMethod) {
-        this.amount = amount;
-        this.currency = currency;
-        this.userId = userId;
-        this.payeeId = payeeId;
-        this.paymentMethodId = paymentMethod;
     }
 };
