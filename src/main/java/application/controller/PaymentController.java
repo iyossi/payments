@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequestMapping("/payments")
 public class PaymentController {
 
-    Logger logger = LoggerFactory.getLogger(PaymentController.class);
+    private final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     @Autowired
     private PaymentService paymentService;
@@ -26,9 +26,7 @@ public class PaymentController {
     public UUID createPayment(@RequestBody RequestDto request) {
         try {
             logger.info("request is " + request.toString());
-            UUID paymentId = paymentService.handleRequest(request);
-//            return UUID.randomUUID();
-            return paymentId;
+            return paymentService.handleRequest(request);
 
         } catch (RuntimeException e) {
             logger.error(e.toString());

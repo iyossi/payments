@@ -72,4 +72,4 @@ public class RequestDto implements Serializable {
     public void setPaymentMethodId(UUID paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
     }
-};
+}

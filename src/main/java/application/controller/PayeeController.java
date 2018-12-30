@@ -19,20 +19,18 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payees")
-public class PayeeController {
+class PayeeController {
 
-    Logger logger = LoggerFactory.getLogger(PayeeController.class);
+    private final Logger logger = LoggerFactory.getLogger(PayeeController.class);
     @Autowired
+    private
     CustomerService customerService;
 
     @GetMapping("")
     public List<CustomerDto> getPayees() {
         try {
-            List<CustomerDto> result = customerService.getAllCustomers().stream().
-                    map(obj -> {
-                        return new CustomerDto(obj.getCustomerId(), obj.getName(), obj.getMail());
-                    }).collect(Collectors.toList());
-            return result;
+            return customerService.getAllCustomers().stream().
+                    map(obj -> new CustomerDto(obj.getCustomerId(), obj.getName(), obj.getMail())).collect(Collectors.toList());
         } catch (RuntimeException e) {
             logger.error(e.toString());
             e.printStackTrace();
@@ -43,12 +41,8 @@ public class PayeeController {
     @GetMapping("/{id}/payment-methods")
     public List<PaymentMethodDto> getPaymentMethod(@PathVariable UUID id) {
         try {
-            System.out.println("id=" + id.toString());
-            List<PaymentMethodDto> result = customerService.getPaymentMethodByCustomerId(id).stream().
-                    map(obj -> {
-                        return new PaymentMethodDto(obj.getId(), obj.getType().name(), obj.getNumber());
-                    }).collect(Collectors.toList());
-            return result;
+            return customerService.getPaymentMethodByCustomerId(id).stream().
+                    map(obj -> new PaymentMethodDto(obj.getId(), obj.getType().name(), obj.getNumber())).collect(Collectors.toList());
         } catch (RuntimeException e) {
             logger.error(e.toString());
             throw new BasicRestException(HttpStatus.NOT_FOUND);

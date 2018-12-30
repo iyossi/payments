@@ -18,21 +18,12 @@ public class Application {
     public static final String RISK_REQUESTS_ROUTING_KEY = "payment.risk.request";
     static final public String RISK_REQUEST_QUEUE_NAME = "riskRequests";
     static final public String RISK_RESPONSE_QUEUE_NAME = "riskResponses";
-    static final String topicExchangeName = "riskEngine-exchange";
-    static Logger logger = LoggerFactory.getLogger(Application.class);
-
-//    static final public String RISK_REQUEST_QUEUE_NAME = "paymentRequests";
+    private static final String topicExchangeName = "riskEngine-exchange";
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static String getTopicExchangeName() {
         return topicExchangeName;
     }
-
-//
-//    @Bean
-//    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-//        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-//        return rabbitTemplate;
-//    }
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
@@ -40,29 +31,15 @@ public class Application {
     }
 
     @Bean
-    TopicExchange exchange() {
+    public TopicExchange exchange() {
         return new TopicExchange(topicExchangeName);
     }
 
     @Bean
-    Queue requestQueue() {
+    public Queue requestQueue() {
         return new Queue(RISK_REQUEST_QUEUE_NAME, false);
     }
 
-//    @Bean
-//    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-//                                             MessageListenerAdapter listenerAdapter) {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames(RISK_REQUEST_QUEUE_NAME);
-//        container.setMessageListener(listenerAdapter);
-//        return container;
-//    }
-//
-//    @Bean
-//    MessageListenerAdapter listenerAdapter(RiskEngineService consumer) {
-//        return new MessageListenerAdapter(consumer, "consumeMessage");
-//    }
 
     @Bean
     Binding binding() {
@@ -70,29 +47,13 @@ public class Application {
     }
 
     @Bean
-    Queue responseQueue() {
+    public Queue responseQueue() {
         return new Queue(RISK_RESPONSE_QUEUE_NAME, false);
     }
 
-//    @Bean
-//    SimpleMessageListenerContainer responseContainer(ConnectionFactory connectionFactory,
-//                                             MessageListenerAdapter listenerAdapter) {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//        container.setQueueNames(RISK_RESPONSE_QUEUE_NAME);
-//        container.setMessageListener(listenerAdapter);
-//        return container;
-//    }
-//
-//    @Bean
-//    MessageListenerAdapter listenerResponseAdapter(PaymentService consumer) {
-//        return new MessageListenerAdapter(consumer, "consumeResponseMessage");
-//    }
 
     @Bean
     Binding bindingResponse() {
         return BindingBuilder.bind(responseQueue()).to(exchange()).with(RISK_RESPONSE_ROUTING_KEY);
     }
-
-
 }
