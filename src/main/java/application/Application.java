@@ -16,12 +16,10 @@ public class Application {
 
     public static final String RISK_RESPONSE_ROUTING_KEY = "payment.risk.response";
     public static final String RISK_REQUESTS_ROUTING_KEY = "payment.risk.request";
-    static Logger logger = LoggerFactory.getLogger(Application.class);
-
-    static final String topicExchangeName = "riskEngine-exchange";
-
     static final public String RISK_REQUEST_QUEUE_NAME = "riskRequests";
     static final public String RISK_RESPONSE_QUEUE_NAME = "riskResponses";
+    static final String topicExchangeName = "riskEngine-exchange";
+    static Logger logger = LoggerFactory.getLogger(Application.class);
 
 //    static final public String RISK_REQUEST_QUEUE_NAME = "paymentRequests";
 
@@ -36,21 +34,19 @@ public class Application {
 //        return rabbitTemplate;
 //    }
 
+    public static void main(String[] args) {
+        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+        logger.info("Starting");
+    }
+
     @Bean
     TopicExchange exchange() {
         return new TopicExchange(topicExchangeName);
     }
 
-
     @Bean
     Queue requestQueue() {
         return new Queue(RISK_REQUEST_QUEUE_NAME, false);
-    }
-
-
-    @Bean
-    Binding binding() {
-        return BindingBuilder.bind(requestQueue()).to(exchange()).with(RISK_REQUESTS_ROUTING_KEY);
     }
 
 //    @Bean
@@ -68,15 +64,14 @@ public class Application {
 //        return new MessageListenerAdapter(consumer, "consumeMessage");
 //    }
 
+    @Bean
+    Binding binding() {
+        return BindingBuilder.bind(requestQueue()).to(exchange()).with(RISK_REQUESTS_ROUTING_KEY);
+    }
 
     @Bean
     Queue responseQueue() {
         return new Queue(RISK_RESPONSE_QUEUE_NAME, false);
-    }
-
-    @Bean
-    Binding bindingResponse() {
-        return BindingBuilder.bind(responseQueue()).to(exchange()).with(RISK_RESPONSE_ROUTING_KEY);
     }
 
 //    @Bean
@@ -94,9 +89,9 @@ public class Application {
 //        return new MessageListenerAdapter(consumer, "consumeResponseMessage");
 //    }
 
-    public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(Application.class, args);
-        logger.info("Starting");
+    @Bean
+    Binding bindingResponse() {
+        return BindingBuilder.bind(responseQueue()).to(exchange()).with(RISK_RESPONSE_ROUTING_KEY);
     }
 
 
